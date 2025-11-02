@@ -16,7 +16,9 @@ spec:
       containers:
         - name: fetch-data
           image: 173381466759.dkr.ecr.ap-northeast-1.amazonaws.com/quant:latest
+          # for manual pull image
           imagePullPolicy: IfNotPresent
+
           command: ["python", "-u", "-m", "ws.ws_binance_kline_future"]
           ports:
             - containerPort: 8765
@@ -24,16 +26,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: app-config
-          livenessProbe:
-            tcpSocket:
-              port: 8765
-            initialDelaySeconds: 10
-            periodSeconds: 20
-          readinessProbe:
-            tcpSocket:
-              port: 8765
-            initialDelaySeconds: 5
-            periodSeconds: 10
+
           resources:
             requests:
               cpu: "150m"
