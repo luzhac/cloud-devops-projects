@@ -55,4 +55,5 @@ efs:
   storageClass: efs-sc
   accessModes:
     - ReadWriteMany
-  size: 5Gi
+  size: 100Mi
+

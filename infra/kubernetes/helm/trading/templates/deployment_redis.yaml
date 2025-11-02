@@ -31,7 +31,7 @@ spec:
   selector:
     app: redis
   ports:
-    - port: {{ .Values.redisService.port }}
+    - port: {{ .Values.redis.service.port }}
       targetPort: 6379
-  type: {{ .Values.redisService.type }}
+  type: {{ .Values.redis.service.type }}
 {{- end }}
