@@ -80,7 +80,9 @@ kubectl patch deployment metrics-server -n kube-system \
 kubectl rollout restart deployment metrics-server -n kube-system
 
 echo "==== [Step 11]  EFS   ===="
-kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/ecr/?ref=release-1.5"
+kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.5"
+
+
 
 
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
