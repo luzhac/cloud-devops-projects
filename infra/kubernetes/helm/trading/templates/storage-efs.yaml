@@ -19,8 +19,10 @@ metadata:
   name: efs-claim
   namespace: {{ .Release.Namespace }}
 spec:
+
   accessModes:
-    - {{ .Values.efs.accessMode  }}
+  - "ReadWriteMany"
+
   storageClassName: {{ .Values.efs.storageClass }}
   resources:
     requests:
