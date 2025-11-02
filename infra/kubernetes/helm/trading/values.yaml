@@ -50,7 +50,7 @@ redis:
 # ========== EFS STORAGE ==========
 efs:
   enabled: true
-  server: fs-12345678.efs.eu-west-1.amazonaws.com
+  server: fs-0afc15b34a304be28.efs.eu-west-1.amazonaws.com
   path: /
   storageClass: efs-sc
   accessModes:
