@@ -8,5 +8,6 @@ helm uninstall trading -n trading
 kubectl delete ns trading
 
 
+helm upgrade trading ./infra/kubernetes/helm/trading -n trading
 
 
