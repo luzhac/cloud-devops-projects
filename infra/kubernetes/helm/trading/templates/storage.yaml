@@ -1,14 +1,13 @@
-
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: efs-sc
+  name: {{ .Values.efs.storageClass | default "efs-sc" }}
 provisioner: efs.csi.aws.com
 parameters:
-  provisioningMode: efs-ap            #
-  fileSystemId: fs-0afc15b34a304be28
+  provisioningMode: efs-ap
+  fileSystemId: {{ .Values.efs.fileSystemId }}
   directoryPerms: "700"
-reclaimPolicy: Retain
+reclaimPolicy: {{ .Values.efs.reclaimPolicy | default "Retain" }}
 volumeBindingMode: Immediate
 mountOptions:
   - tls
@@ -17,12 +16,12 @@ mountOptions:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: efs-claim
-  namespace: trading
+  name: {{ .Values.efs.claimName | default "efs-claim" }}
+  namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: efs-sc
+    - {{ .Values.efs.accessMode | default "ReadWriteMany" }}
+  storageClassName: {{ .Values.efs.storageClass | default "efs-sc" }}
   resources:
     requests:
-      storage: 100Mi
+      storage: {{ .Values.efs.size | default "100Mi" }}
