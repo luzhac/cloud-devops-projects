@@ -1,5 +1,4 @@
-trading:
-  enabled: false
+
 
 prometheus:
   server:
