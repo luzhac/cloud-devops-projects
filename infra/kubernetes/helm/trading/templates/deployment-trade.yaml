@@ -29,6 +29,10 @@ spec:
               value: "service-r"
             - name: REDIS_PORT
               value: "6379"
+            - name: WS_HOST
+              value: "service-a"
+            - name: WS_PORT
+              value: "8765"
 
           resources:
             requests:
