@@ -1,27 +1,30 @@
-kubectl create namespace monitoring
+helm uninstall prometheus -n monitoring
+helm uninstall grafana -n monitoring
+helm uninstall kube-state-metrics -n monitoring
+helm uninstall node-exporter -n monitoring
 
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
-helm install prometheus prometheus-community/prometheus -n monitoring \
-  --set server.service.type=NodePort \
-  --set server.service.nodePort=30900 \
-  --set server.persistentVolume.enabled=false
+helm install monitoring prometheus-community/kube-prometheus-stack \
+  -n monitoring \
+  --create-namespace \
+  --set grafana.adminPassword=admin \
+  --set grafana.service.type=NodePort \
+  --set grafana.service.nodePort=30300 \
+  --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false
 
 
-helm install node-exporter prometheus-community/prometheus-node-exporter -n monitoring
-
-helm install kube-state-metrics prometheus-community/kube-state-metrics -n monitoring
 
 
 
-helm install grafana grafana/grafana -n monitoring \
-  --set service.type=NodePort \
-  --set service.nodePort=30300 \
-  --set adminUser=admin \
-  --set adminPassword=admin \
-  --set persistence.enabled=false
+
+kubectl create namespace monitoring
+
+---------------------
+
+
 
 
 
