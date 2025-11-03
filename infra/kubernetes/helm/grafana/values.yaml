@@ -20,3 +20,5 @@ datasources:
 
 nodeSelector:
   role: monitor
+
+#kubectl label node ip-10-0-1-160  role=monitor

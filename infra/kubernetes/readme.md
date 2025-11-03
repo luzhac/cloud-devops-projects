@@ -1,6 +1,82 @@
+kubectl create namespace monitoring
+
+helm install grafana grafana/grafana -n monitoring \
+  --set service.type=NodePort \
+  --set service.nodePort=30300 \
+  --set adminUser=admin \
+  --set adminPassword=admin \
+  --set persistence.enabled=false
+
+
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm uninstall prometheus -n monitoring
+
+helm install prometheus prometheus-community/prometheus -n monitoring \
+  --set server.service.type=NodePort \
+  --set server.service.nodePort=30900 \
+  --set server.persistentVolume.enabled=false
+
+
+
+
+
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+helm uninstall loki -n monitoring
+
+helm install loki grafana/loki -n monitoring \
+  --set deploymentMode=SingleBinary \
+  --set singleBinary.replicas=1 \
+  --set simpleScalable.replicas=0 \
+  --set backend.replicas=0 \
+  --set read.replicas=0 \
+  --set write.replicas=0 \
+  --set loki.auth_enabled=false \
+  --set loki.commonConfig.replication_factor=1 \
+  --set loki.storage.type=filesystem \
+  --set loki.storage.filesystem.rulesDirectory=/var/loki/rules \
+  --set loki.storage.bucketNames.chunks=chunks \
+  --set loki.storage.bucketNames.ruler=ruler \
+  --set loki.storage.bucketNames.admin=admin \
+  --set loki.useTestSchema=true \
+  --set persistence.enabled=false
+
+
+
+
+helm install promtail grafana/promtail -n monitoring \
+  --set "config.clients[0].url=http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
+
+
+
+
+
+
+
+
+
+------------
+
 
 
 export KUBECONFIG=/etc/kubernetes/admin.conf
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 kubectl create ns trading
