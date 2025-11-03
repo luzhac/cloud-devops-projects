@@ -73,6 +73,11 @@ curl -L -o /tmp/cni-plugins.tgz https://github.com/containernetworking/plugins/r
 sudo tar -xzvf /tmp/cni-plugins.tgz -C /opt/cni/bin
 sudo systemctl restart kubelet
 
+
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+
+
 echo "==== [Step 10]  metrics   ===="
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 kubectl patch deployment metrics-server -n kube-system \
@@ -83,7 +88,7 @@ echo "==== [Step 11]  EFS   ===="
 kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.5"
 
 
+kubectl label node ip-10-0-1-160 role=monitor
 
 
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 

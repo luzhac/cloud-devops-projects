@@ -1,0 +1,12 @@
+config:
+  lokiAddress: http://loki.trading.svc.cluster.local:3100/loki/api/v1/push
+  snippets:
+    pipelineStages:
+      - docker: {}
+
+daemonset:
+  tolerations: []
+  nodeSelector: {}
+
+serviceMonitor:
+  enabled: false

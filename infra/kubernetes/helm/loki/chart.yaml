@@ -1,0 +1,4 @@
+apiVersion: v2
+name: loki
+version: 1.0.0
+description: Loki log storage backend

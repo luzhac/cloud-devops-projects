@@ -10,6 +10,11 @@ kubectl delete ns trading
 
 helm upgrade trading ./infra/kubernetes/helm/trading -n trading
 
+kubectl exec -it -n trading generate-signal-8459977486-6t72j  -- bash
+cd /mnt/efs
+touch test.txt
+ls -l test.txt
+
 
 
 ## config  ecr login

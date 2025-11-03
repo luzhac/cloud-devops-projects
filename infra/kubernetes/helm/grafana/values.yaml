@@ -1,0 +1,22 @@
+adminUser: admin
+adminPassword: admin
+
+service:
+  type: NodePort
+  nodePort: 30300
+
+persistence:
+  enabled: false
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki.trading.svc.cluster.local:3100
+        isDefault: true
+
+nodeSelector:
+  role: monitor
