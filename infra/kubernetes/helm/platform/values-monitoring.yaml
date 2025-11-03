@@ -1,5 +1,3 @@
-
-
 prometheus:
   enabled: true
   server:
@@ -21,18 +19,16 @@ grafana:
 
 loki:
   enabled: true
-  grafana:
-    enabled: false
-  prometheus:
-    enabled: false
-  loki:
-    auth_enabled: false
-    storage:
-      type: filesystem
+  auth_enabled: false
+  storage:
+    type: filesystem
   nodeSelector:
     role: monitor
 
 promtail:
   enabled: true
   config:
-    lokiAddress: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+    clients:
+      - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+  nodeSelector:
+    role: monitor
