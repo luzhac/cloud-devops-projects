@@ -1,8 +1,10 @@
+1. prometheus and grafana
 helm uninstall prometheus -n monitoring
 helm uninstall grafana -n monitoring
 helm uninstall kube-state-metrics -n monitoring
 helm uninstall node-exporter -n monitoring
 
+helm uninstall monitoring -n monitoring
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
@@ -15,7 +17,8 @@ helm install monitoring prometheus-community/kube-prometheus-stack \
   --set grafana.service.nodePort=30300 \
   --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false
 
-
+2. alert
+3. 
 
 
 
