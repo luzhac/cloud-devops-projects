@@ -1,16 +1,4 @@
-
-
- 
-
-
-
 export KUBECONFIG=/etc/kubernetes/admin.conf
-
-
-
- 
-
-
 
 
 kubectl create ns trading
