@@ -13,7 +13,6 @@ reclaimPolicy: {{ .Values.efs.reclaimPolicy }}
 volumeBindingMode: Immediate
 mountOptions:
   - tls
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -1,4 +1,3 @@
-
 global:
   registry: 123456789012.dkr.ecr.eu-west-1.amazonaws.com
 
@@ -50,6 +49,7 @@ redis:
 # ========== EFS STORAGE ==========
 efs:
   enabled: true
+  reclaimPolicy: Delete
   fileSystemId: fs-0afc15b34a304be28
   path: /
   storageClass: efs-sc
