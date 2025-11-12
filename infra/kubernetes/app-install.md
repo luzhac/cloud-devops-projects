@@ -40,8 +40,17 @@ aws ecr get-login-password --region ap-northeast-1 \
 --platform linux/arm64 \
 173381466759.dkr.ecr.ap-northeast-1.amazonaws.com/quant:latest
 
-
-
-
 ```
+
+# ebs
+helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+helm repo update
+helm upgrade --install aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
+  --namespace kube-system \
+  --set enableVolumeResizing=true \
+  --set enableVolumeSnapshot=true
+
+
+
+# efs
  
