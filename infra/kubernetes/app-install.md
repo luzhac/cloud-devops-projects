@@ -31,7 +31,7 @@ ls -l test.txt
 
 
 
-## config  ecr login in woring node
+## config  ecr login in working node
 
 ```
 aws ecr get-login-password --region ap-northeast-1 \
