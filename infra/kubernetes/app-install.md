@@ -47,8 +47,6 @@ helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-d
 helm repo update 
 helm upgrade --install aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
   --namespace kube-system \
-  --set enableVolumeResizing=true \
-  --set enableVolumeSnapshot=true
 
 
 
