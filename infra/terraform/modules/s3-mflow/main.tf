@@ -1,17 +1,3 @@
-terraform {
-  required_version = ">= 1.5.0"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = "${var.region}"
-}
 
 
 resource "aws_s3_bucket" "mlflow_artifacts" {
@@ -69,7 +55,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "mlflow_lifecycle" {
     expiration {
       days = 180  # Delete after 6 months
     }
-
+  filter {}
     noncurrent_version_expiration {
       noncurrent_days = 30
     }
