@@ -118,6 +118,10 @@ spec:
             - configMapRef:
                 name: mlflow-config
           command: [ "bash", "-c" ]
+          env:
+            - name: PATH
+              value: "/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
           args:
             - pip install mlflow boto3 psycopg2-binary && \
               mlflow server \
