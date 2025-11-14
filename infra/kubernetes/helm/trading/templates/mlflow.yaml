@@ -120,13 +120,13 @@ spec:
           command: [ "bash", "-c" ]
           args:
             - |
-              pip install mlflow boto3 psycopg2-binary && \
-              python -m mlflow server  --workers 1 \
-                --backend-store-uri $BACKEND_STORE_URI \
-                --default-artifact-root $ARTIFACT_ROOT \
+              pip install --no-cache-dir mlflow boto3 psycopg2-binary && \
+              python -m mlflow server \
+                --backend-store-uri "$BACKEND_STORE_URI" \
+                --default-artifact-root "$ARTIFACT_ROOT" \
                 --host 0.0.0.0 \
-                --port 5000
-
+                --port 5000 \
+                --gunicorn-opts "--timeout 120 --workers 1 --threads 4"
 
 
 
