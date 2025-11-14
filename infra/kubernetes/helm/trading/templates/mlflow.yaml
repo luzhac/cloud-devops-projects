@@ -117,7 +117,7 @@ spec:
                 name: mlflow-secret
             - configMapRef:
                 name: mlflow-config
-          command: [ "bash", "-c" ]
+          command: [ "sh", "-c" ]
 
 
           args:
