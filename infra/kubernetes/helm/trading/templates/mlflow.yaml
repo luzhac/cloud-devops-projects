@@ -111,25 +111,21 @@ spec:
     spec:
       containers:
         - name: mlflow
-          image: ghcr.io/mlflow/mlflow:v2.9.2  # or latest version
+          image: python:3.9-slim
           envFrom:
             - secretRef:
                 name: mlflow-secret
             - configMapRef:
                 name: mlflow-config
-          command:
-            - mlflow
-            - server
-            - --backend-store-uri
-            - $(BACKEND_STORE_URI)
-            - --default-artifact-root
-            - $(ARTIFACT_ROOT)
-            - --host
-            - "0.0.0.0"
-            - --port
-            - "5000"
-          ports:
-            - containerPort: 5000
+          command: [ "bash", "-c" ]
+          args:
+            - |
+              pip install mlflow boto3 psycopg2-binary && \
+              python -m mlflow server \
+                --backend-store-uri $BACKEND_STORE_URI \
+                --default-artifact-root $ARTIFACT_ROOT \
+                --host 0.0.0.0 \
+                --port 5000
 
 
 
