@@ -90,7 +90,7 @@ metadata:
   namespace: mlflow
 data:
   BACKEND_STORE_URI: "postgresql://mlflow:mlflowpass@postgres.mlflow.svc.cluster.local:5432/mlflowdb"
-  ARTIFACT_ROOT: "arn:aws:s3:::amzn-s3-mlflow"
+  ARTIFACT_ROOT: "s3://mlflow-artifacts-i9lkus/mlflow/"
   MLFLOW_S3_ENDPOINT_URL: "https://s3.amazonaws.com"
 
 ---
