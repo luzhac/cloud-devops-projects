@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "predictor-api.fullname" . }}
+  labels:
+    app: {{ include "predictor-api.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "predictor-api.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "predictor-api.name" . }}
+    spec:
+      containers:
+        - name: predictor-api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MLFLOW_TRACKING_URI
+              value: {{ .Values.env.MLFLOW_TRACKING_URI | quote }}
+            - name: MODEL_NAME
+              value: {{ .Values.env.MODEL_NAME | quote }}
+            - name: MODEL_STAGE
+              value: {{ .Values.env.MODEL_STAGE | quote }}
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 20

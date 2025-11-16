@@ -111,7 +111,7 @@ spec:
     spec:
       containers:
         - name: mlflow
-          image: python:3.9-slim
+          image: ghcr.io/mlflow/mlflow:latest
           envFrom:
             - secretRef:
                 name: mlflow-secret

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: predictor-api
+description: FastAPI MLflow model serving
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

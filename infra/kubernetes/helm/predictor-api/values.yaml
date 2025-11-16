@@ -1,0 +1,40 @@
+replicaCount: 2
+
+image:
+  repository: <your-account-id>.dkr.ecr.<region>.amazonaws.com/predictor-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+env:
+  MLFLOW_TRACKING_URI: "http://mlflow.mlflow.svc.cluster.local:5000"
+  MODEL_NAME: "xgboost_price_predictor"
+  MODEL_STAGE: "Production"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+ingress:
+  enabled: false
+  className: nginx
+  hosts:
+    - host: predictor.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
