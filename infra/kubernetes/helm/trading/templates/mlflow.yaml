@@ -166,7 +166,7 @@ kind: Ingress
 metadata:
   name: mlflow-ingress
   annotations:
-    kubernetes.io/ingress.class: "nginx"
+
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 
     # Basic Auth
@@ -175,6 +175,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
 
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - mlflow.marscompute.com
