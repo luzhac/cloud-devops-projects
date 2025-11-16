@@ -171,16 +171,13 @@ metadata:
 
 
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/auth-type: "basic"
-    nginx.ingress.kubernetes.io/auth-secret: "mlflow-basic-auth"
-    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+
 
 spec:
   ingressClassName: nginx
 
   rules:
-  - host: mlflow.marscompute.com
-    http:
+  - http:
       paths:
       - path: /
         pathType: Prefix
