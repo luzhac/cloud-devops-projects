@@ -133,7 +133,7 @@ spec:
               cpu: "500m"
           args:
             - |
-              pip install --no-cache-dir mlflow[auth]==3.1.1 boto3 psycopg2-binary && \
+              pip install --no-cache-dir "mlflow[auth]==3.1.1" boto3 psycopg2-binary && \
               python -m mlflow server \
                 --backend-store-uri "$BACKEND_STORE_URI" \
                 --default-artifact-root "$ARTIFACT_ROOT" \
