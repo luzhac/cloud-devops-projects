@@ -177,7 +177,8 @@ spec:
   ingressClassName: nginx
 
   rules:
-  - http:
+  - host: mlflow.marscompute.com
+    http:
       paths:
       - path: /
         pathType: Prefix
