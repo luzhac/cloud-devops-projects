@@ -117,7 +117,7 @@ spec:
                 name: mlflow-secret
             - configMapRef:
                 name: mlflow-config
-          command: [ "bash", "-c" ]
+
           resources:
             requests:
               memory: "512Mi"
@@ -125,15 +125,14 @@ spec:
             limits:
               memory: "768Mi"
               cpu: "500m"
-          args:
-            - |
-              pip install --no-cache-dir mlflow boto3 psycopg2-binary && \
-              python -m mlflow server \
-                --backend-store-uri "$BACKEND_STORE_URI" \
-                --default-artifact-root "$ARTIFACT_ROOT" \
-                --host 0.0.0.0 \
-                --port 5000 \
-                --gunicorn-opts "--timeout 120 --workers 1 --threads 4"
+          command:
+            - mlflow
+            - server
+            - --host=0.0.0.0
+            - --port=5000
+            - --backend-store-uri=/mlflow
+            - --default-artifact-root=/mlflow/artifacts
+            - --app-name=basic-auth
 
 
 
