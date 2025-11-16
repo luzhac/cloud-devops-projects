@@ -113,8 +113,12 @@ spec:
         - name: mlflow
           image: python:3.9-slim
 
-
-
+          env:
+            - name: MLFLOW_FLASK_SERVER_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow-secret
+                  key: flask-secret-key
 
           envFrom:
             - secretRef:
