@@ -168,9 +168,9 @@ metadata:
   namespace: mlflow
   annotations:
 
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 
-    # Basic Auth
+
+
     nginx.ingress.kubernetes.io/auth-type: "basic"
     nginx.ingress.kubernetes.io/auth-secret: "mlflow-basic-auth"
     nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
@@ -186,6 +186,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: mlflow-service
+            name: mlflow
             port:
               number: 5000
