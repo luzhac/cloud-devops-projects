@@ -16,7 +16,9 @@ resource "aws_security_group" "sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-   ingress {
+
+
+     ingress {
     from_port   = 5000
     to_port     = 33000
     protocol    = "tcp"
@@ -90,6 +92,7 @@ resource "aws_security_group" "alb_sg" {
 }
 
 resource "aws_security_group_rule" "allow_alb_to_nodeport" {
+
   type              = "ingress"
   description       = "Allow ALB to access NodePort"
   from_port         = 30000
