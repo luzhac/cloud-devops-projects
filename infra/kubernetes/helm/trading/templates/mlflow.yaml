@@ -91,7 +91,7 @@ metadata:
 data:
   BACKEND_STORE_URI: "postgresql://mlflow:mlflowpass@postgres.mlflow.svc.cluster.local:5432/mlflowdb"
   ARTIFACT_ROOT: "s3://mlflow-artifacts-i9lkus/mlflow/"
-  MLFLOW_S3_ENDPOINT_URL: "https://s3.amazonaws.com"
+  MLFLOW_S3_ENDPOINT_URL: "https://s3.ap-northeast-1.amazonaws.com"
 
 ---
 apiVersion: apps/v1
