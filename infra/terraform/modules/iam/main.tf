@@ -1,3 +1,23 @@
+resource "aws_iam_role" "eks_cluster_role" {
+  name = "eks-cluster-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = { "Service" : "eks.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
+  role       = aws_iam_role.eks_cluster_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
+
+
 resource "aws_iam_role" "ssm_role" {
   name = "${var.cluster_name}-role"
 
@@ -27,10 +47,40 @@ resource "aws_iam_role_policy_attachment" "efs_csi_driver_attach" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "s3_full_access_attach" {
-  role       = aws_iam_role.ssm_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+resource "aws_iam_policy" "bucket_full_access" {
+  name        = "bucket-full-access"
+  description = "Full access to specific S3 bucket only"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+
+      {
+        Effect   = "Allow"
+        Action   = "s3:ListBucket"
+        Resource = "arn:aws:s3:::mlflow-artifacts-i9lkus"
+      },
+
+      {
+        Effect   = "Allow"
+        Action   = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:AbortMultipartUpload",
+          "s3:ListMultipartUploadParts"
+        ]
+        Resource = "arn:aws:s3:::mlflow-artifacts-i9lkus/*"
+      }
+    ]
+  })
 }
+
+resource "aws_iam_role_policy_attachment" "bucket_full_access_attach" {
+  role       = aws_iam_role.ssm_role.name
+  policy_arn = aws_iam_policy.bucket_full_access.arn
+}
+
 
 
 resource "aws_iam_role_policy_attachment" "ebs_csi_driver_attach" {

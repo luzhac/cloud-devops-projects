@@ -1,4 +1,9 @@
-output "master_public_ip"  { value = aws_instance.master.public_ip }
-output "app_public_ip"     { value = aws_instance.app.public_ip }
-output "monitor_public_ip" { value = aws_instance.monitor.public_ip }
-output "master_instance_id" { value = aws_instance.master.id }
+output "app_public_ips" {
+  description = "Public IPs of the app instances"
+  value       = aws_instance.app[*].public_ip
+}
+
+output "app_instance_ids" {
+  description = "IDs of the app instances"
+  value       = aws_instance.app[*].id
+}
