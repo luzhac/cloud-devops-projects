@@ -5,6 +5,10 @@ terraform {
     aws   = { source = "hashicorp/aws",   version = "~> 5.64" }
     tls   = { source = "hashicorp/tls",   version = "~> 4.0" }
     local = { source = "hashicorp/local", version = "~> 2.4" }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
   }
 
 
@@ -12,4 +16,22 @@ terraform {
 
 provider "aws" {
   region = var.region
+}
+
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_ca_certificate)
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args = [
+      "eks",
+      "get-token",
+      "--cluster-name",
+      module.eks.cluster_name,
+      "--region",
+      "ap-northeast-1"
+    ]
+  }
 }

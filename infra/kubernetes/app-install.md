@@ -1,3 +1,26 @@
+-----eks-------
+#
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+#
+helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver/
+helm repo update
+
+helm install aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver `
+  -n kube-system
+
+#
+aws eks create-addon `
+  --cluster-name k8s `
+  --addon-name aws-ebs-csi-driver `
+  --region ap-northeast-1
+
+
+
+
+
+
+------ no eks ------------
 export KUBECONFIG=/etc/kubernetes/admin.conf
 
 kubectl create ns trading
