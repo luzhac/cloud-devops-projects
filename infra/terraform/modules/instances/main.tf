@@ -1,8 +1,10 @@
 data "aws_ami" "eks_arm" {
-  owners = ["602401143452"]
+  owners      = ["602401143452"]
+  most_recent = true
+
   filter {
     name   = "name"
-    values = ["amazon-eks-node-*-arm64-*"]
+    values = ["amazon-eks-node-al2023-arm64-standard-1.34-v20251120"]
   }
 }
 
