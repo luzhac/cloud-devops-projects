@@ -11,7 +11,12 @@ resource "aws_eks_cluster" "this" {
     endpoint_public_access  = true
   }
 
-  version = "1.34"
+  version = "1.33"
+
+  access_config {
+    authentication_mode = "API"
+  }
+
 }
 
 #####################################

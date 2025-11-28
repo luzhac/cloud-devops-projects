@@ -1,4 +1,4 @@
-output "security_group_id" {
+output "security_group_node_id" {
   value = aws_security_group.sg.id
 }
 

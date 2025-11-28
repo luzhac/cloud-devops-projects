@@ -1,15 +1,66 @@
------eks-------
-#
+-----eks-----1.33--
+aws eks update-kubeconfig --name k8s --region ap-northeast-1
+
+# to support: kubectl top
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
-#
-helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver/
-helm repo update
+# efs
+modiy the efs id in helm
 
-helm install aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver `
-  -n kube-system
+eksctl utils associate-iam-oidc-provider --region=ap-northeast-1 --cluster=k8s --approve
 
-#
+### 
+export cluster_name=k8s
+export role_name=AmazonEKS_EFS_CSI_DriverRole
+eksctl create iamserviceaccount \
+    --name efs-csi-controller-sa \
+    --namespace kube-system \
+    --cluster $cluster_name \
+    --role-name $role_name \
+    --region=ap-northeast-1 \
+    --role-only \
+    --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy \
+    --approve
+TRUST_POLICY=$(aws iam get-role --output json --role-name $role_name --query 'Role.AssumeRolePolicyDocument' | \
+    sed -e 's/efs-csi-controller-sa/efs-csi-controller-sa/' -e 's/StringEquals/StringLike/')
+aws iam update-assume-role-policy --role-name $role_name --policy-document "$TRUST_POLICY"
+
+aws iam get-role --role-name AmazonEKS_EFS_CSI_DriverRole
+
+
+eksctl create addon \
+  --name aws-efs-csi-driver \
+  --cluster k8s \
+  --region ap-northeast-1 \
+  --service-account-role-arn arn:aws:iam::173381466759:role/AmazonEKS_EFS_CSI_DriverRole \
+  --force
+
+kubectl get pods -n kube-system | Select-String "efs"
+
+
+# ebs 
+https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html
+1. install eksctl
+2.
+eksctl utils associate-iam-oidc-provider --region=ap-northeast-1 --cluster=k8s --approve
+eksctl create iamserviceaccount \
+  --name ebs-csi-controller-sa \
+  --namespace kube-system \
+  --cluster k8s \
+  --override-existing-serviceaccounts \
+  --region ap-northeast-1 \
+  --role-name AmazonEKS_EBS_CSI_DriverRole \
+  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+  --approve
+
+
+
+aws eks create-addon \
+  --cluster-name k8s \
+  --addon-name aws-ebs-csi-driver \
+  --service-account-role-arn arn:aws:iam::173381466759:role/AmazonEKS_EBS_CSI_DriverRole \
+  --region ap-northeast-1 \
+  --resolve-conflicts OVERWRITE
 
 
 
@@ -33,7 +84,7 @@ helm upgrade monitoring . -n monitoring -f values-monitoring.yaml
 ** updata efs id found in terraform **
 # 2
 helm install trading ./infra/kubernetes/helm/trading --namespace trading --create-namespace
-helm uninstall trading -n trading
+
 
 kubectl delete ns trading
 
@@ -58,7 +109,7 @@ sudo apt install -y nfs-common
 
 sudo mkdir -p /mnt/efs
 
-sudo mount -t nfs4 -o nfsvers=4.1 fs-05aa06c00158d0795.efs.ap-northeast-1.amazonaws.com:/ /mnt/efs
+sudo mount -t nfs4 -o nfsvers=4.1 fs-0aa65fb3dd434ad33.efs.ap-northeast-1.amazonaws.com:/ /mnt/efs
 
 sudo chmod 777 /mnt/efs
 sudo chown -R 1000:1000 /mnt/efs

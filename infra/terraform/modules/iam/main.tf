@@ -49,9 +49,16 @@ resource "aws_iam_role_policy_attachment" "ecr_readonly_attach" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
+# REQUIRED for EFS CSI Driver to mount EFS volumes
 resource "aws_iam_role_policy_attachment" "efs_csi_driver_attach" {
   role       = aws_iam_role.eks_node_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
+}
+
+# REQUIRED to allow EC2 Nodes to mount EFS (NFS)
+resource "aws_iam_role_policy_attachment" "efs_client_rw" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonElasticFileSystemClientReadWriteAccess"
 }
 
 

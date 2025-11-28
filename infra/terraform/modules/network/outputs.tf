@@ -15,3 +15,6 @@ output "subnet_public_ids" {
     aws_subnet.public_d.id
   ]
 }
+output "vpc_cidr_block" {
+  value = aws_vpc.this.cidr_block
+}
