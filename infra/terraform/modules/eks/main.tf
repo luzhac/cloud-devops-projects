@@ -23,7 +23,7 @@ resource "aws_eks_node_group" "default" {
   node_role_arn   = var.node_role_arn
   subnet_ids      = var.subnet_ids
 
-  instance_types = ["t4g.small"]
+  instance_types = ["t4g.medium"]
   ami_type       = "AL2023_ARM_64_STANDARD"
 
   scaling_config {
@@ -41,7 +41,7 @@ resource "aws_eks_node_group" "default" {
   }
 
   capacity_type = "ON_DEMAND"
-  disk_size     = 20
+  disk_size     = 30
 }
 
 #####################################

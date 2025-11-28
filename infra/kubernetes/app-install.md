@@ -10,10 +10,7 @@ helm install aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver `
   -n kube-system
 
 #
-aws eks create-addon `
-  --cluster-name k8s `
-  --addon-name aws-ebs-csi-driver `
-  --region ap-northeast-1
+
 
 
 

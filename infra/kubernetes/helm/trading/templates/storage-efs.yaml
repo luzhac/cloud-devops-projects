@@ -10,7 +10,7 @@ parameters:
   fileSystemId: {{ .Values.efs.fileSystemId }}
   directoryPerms: "700"
 reclaimPolicy: {{ .Values.efs.reclaimPolicy }}
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
 mountOptions:
   - tls
 ---
