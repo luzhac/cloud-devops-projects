@@ -90,7 +90,7 @@ metadata:
   namespace: mlflow
 data:
   BACKEND_STORE_URI: "postgresql://mlflow:mlflowpass@postgres.mlflow.svc.cluster.local:5432/mlflowdb"
-  ARTIFACT_ROOT: "s3://mlflow-artifacts-i9lkus/mlflow/"
+  ARTIFACT_ROOT: "s3://mlflow-artifacts-d4y6z5/mlflow/"
   MLFLOW_S3_ENDPOINT_URL: "https://s3.ap-northeast-1.amazonaws.com"
 
 ---
@@ -152,13 +152,14 @@ metadata:
   name: mlflow
   namespace: mlflow
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: mlflow
   ports:
     - name: http
       port: 5000
       targetPort: 5000
+      nodePort: 30080
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -167,25 +168,19 @@ metadata:
   name: mlflow-ingress
   namespace: mlflow
   annotations:
-
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/auth-type: "basic"
-    nginx.ingress.kubernetes.io/auth-secret: "mlflow-basic-auth"
-    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
-
-
-
-
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/inbound-cidrs: 90.244.245.49/32
 spec:
-  ingressClassName: nginx
-
+  ingressClassName: alb
   rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: mlflow
-            port:
-              number: 5000
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mlflow
+                port:
+                  number: 5000
+

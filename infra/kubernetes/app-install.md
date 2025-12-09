@@ -1,4 +1,5 @@
 -----eks-----1.33--
+(1.34 issue: may be with sa account not sucessful create)
 aws eks update-kubeconfig --name k8s --region ap-northeast-1
 
 # to support: kubectl top
@@ -62,6 +63,34 @@ aws eks create-addon \
   --region ap-northeast-1 \
   --resolve-conflicts OVERWRITE
 
+## alb 
+
+eksctl utils associate-iam-oidc-provider --cluster k8s --approve --region ap-northeast-1
+
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.13.3/docs/install/iam_policy.json
+ 
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json
+
+eksctl create iamserviceaccount \
+    --cluster=k8s \
+    --namespace=kube-system \
+    --name=aws-load-balancer-controller \
+    --attach-policy-arn=arn:aws:iam::173381466759:policy/AWSLoadBalancerControllerIAMPolicy \
+    --override-existing-serviceaccounts \
+    --region ap-northeast-1 \
+    --approve
+
+
+helm repo add eks https://aws.github.io/eks-charts
+helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=k8s \
+  --set serviceAccount.create=false \
+  --set region=ap-northeast-1 \
+  --set vpcId=vpc-0699454d45faef465 \
+  --set serviceAccount.name=aws-load-balancer-controller
 
 
 
@@ -92,7 +121,7 @@ helm upgrade trading ./infra/kubernetes/helm/trading -n trading
 
 # 3
 kubectl apply -f ./infra/kubernetes/helm/trading/templates/deployment-fetch-data.yaml  -n trading
-
+kubectl apply -f ./infra/kubernetes/helm/trading/templates/mlflow.yaml  -n mlflow
 helm upgrade trading . -n trading
 
 kubectl exec -it -n trading generate-signal-8459977486-6t72j  -- bash
